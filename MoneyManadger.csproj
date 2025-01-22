@@ -61,6 +61,7 @@
     <Compile Include="RegistrationPage.xaml.cs">
       <DependentUpon>RegistrationPage.xaml</DependentUpon>
     </Compile>
+    <Compile Include="User.cs" />
     <Compile Include="View\AccauntPage.xaml.cs">
       <DependentUpon>AccauntPage.xaml</DependentUpon>
     </Compile>
