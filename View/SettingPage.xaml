@@ -5,14 +5,38 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:MoneyManadger"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
+      d:DesignHeight="1080" d:DesignWidth="1920"
       Title="SettingPage">
 
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="0.2*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
         <TextBlock Text="Настройки"
-            FontSize="36px"
-            HorizontalAlignment="Center"
-            Margin="0 30px 0 0"
-            Foreground="{StaticResource TextColor}"/>
+                   FontSize="36px"
+                   HorizontalAlignment="Center"
+                   VerticalAlignment="Center"
+                   Margin="0 30px 0 0"
+                   Foreground="{StaticResource TextColor}"/>
+        <StackPanel Grid.Row="1"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center">
+            <Button Content="Включить темную тему"
+                    Background="{StaticResource ElementsColor}"
+                    Foreground="{StaticResource TextColor}"
+                    Width="350px"
+                    Height="80px"
+                    FontSize="24px"
+                    FontWeight="Bold"/>
+            <Button Content="Выйти из приложения"
+                    Background="{StaticResource ElementsColor}"
+                    Foreground="{StaticResource TextColor}"
+                    Width="350px"
+                    Height="80px"
+                    FontSize="24px"
+                    FontWeight="Bold"
+                    Margin="0 200px 0 0"/>
+        </StackPanel>
     </Grid>
 </Page>

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -30,54 +31,69 @@ namespace MoneyManadger
         {
             string username = LoginTextBox.Text;
             string password = PasswordTextBox.Password;
-            
-            User user = ValidateUser(username, password);
-            if (user != null)
+            using (SHA256 hash = SHA256.Create())
             {
-                ManagerWindow managerWindow = new ManagerWindow();
-            managerWindow.Show();
-            }
-            else
-            {
-                MessageBox.Show("Неверный логин или пароль.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
+                byte[] bytes = hash.ComputeHash(Encoding.UTF8.GetBytes(password)); var builder = new StringBuilder();
 
-        }
-        private User ValidateUser(string username, string password)
-        {
-            try
-            {
-                using (SqlConnection connection = new SqlConnection(connectionString))
+                for (int i = 0; i < bytes.Length; i++)
                 {
-                    connection.Open();
-                    string query = "SELECT Name FROM Users WHERE Name = @username AND Password = @password";
-                    using (SqlCommand command = new SqlCommand(query, connection))
-                    {
-                        command.Parameters.AddWithValue("@username", username);
-                        command.Parameters.AddWithValue("@password", password);
+                    builder.Append(bytes[i].ToString("x2"));
+                }
+                password = builder.ToString();
 
-                        using (SqlDataReader reader = command.ExecuteReader())
+                User user = ValidateUser(username, password);
+                if (user != null)
+                {
+                    ManagerWindow managerWindow = new ManagerWindow();
+                    managerWindow.Show();
+                }
+                else
+                {
+                    MessageBox.Show("Неверный логин или пароль.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+
+            }
+        }
+            private User ValidateUser(string username, string password)
+            {
+
+
+                try
+                {
+                    using (SqlConnection connection = new SqlConnection(connectionString))
+                    {
+                        connection.Open();
+                        string query = "SELECT Login FROM Users WHERE Login = @login AND Password = @password";
+                        using (SqlCommand command = new SqlCommand(query, connection))
                         {
-                            if (reader.Read())
+                            command.Parameters.AddWithValue("@login", username);
+                            command.Parameters.AddWithValue("@password", password);
+
+                            using (SqlDataReader reader = command.ExecuteReader())
                             {
-                                return new User
+                                if (reader.Read())
                                 {
-                                    
-                                    Name = reader["Name"].ToString()
-                                };
+                                    return new User
+                                    {
+
+                                        Name = reader["Login"].ToString()
+                                    };
+                                }
                             }
                         }
                     }
                 }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Произошла ошибка: {ex.Message}", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+                return null;
             }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Произошла ошибка: {ex.Message}", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-            return null;
-        }
 
-        private void RegistrateTextClick(object sender, MouseButtonEventArgs e)
+            
+        
+
+        private void TextBlock_MouseDown(object sender, MouseButtonEventArgs e)
         {
             NavigationService.Navigate(new RegistrationPage());
         }

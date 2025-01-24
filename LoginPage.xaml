@@ -17,10 +17,12 @@
                 FontSize="18px"
                 Margin="0 0 0 20px"
                 Foreground="{StaticResource TextColor}"/>
+            <TextBlock Text="Логин"/>
             <TextBox x:Name="LoginTextBox"
               Width="200px"
               Height="30px"
               Margin="0 0 0 20px"/>
+            <TextBlock Text="Пароль"/>
             <PasswordBox x:Name="PasswordTextBox"
                   Width="200px"
                   Height="30px"
@@ -39,7 +41,7 @@
                 Margin="0 20px 0 0"
                 Cursor="Hand"
                 FontSize="14px"
-                Foreground="{StaticResource ElementsColor}" MouseDown="RegistrateTextClick"/>
+                Foreground="{StaticResource ElementsColor}" MouseDown="TextBlock_MouseDown"/>
 
         </StackPanel>
     </Grid>

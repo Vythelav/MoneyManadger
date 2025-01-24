@@ -5,14 +5,76 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:MoneyManadger"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
+      d:DesignHeight="1080" d:DesignWidth="1920"
       Title="HomePage">
 
     <Grid>
-        <TextBlock Text="Домашняя страница"
-                   FontSize="36px"
-                   HorizontalAlignment="Center"
-                   Margin="0 30px 0 0"
+        <Grid.RowDefinitions>
+            <RowDefinition Height="0.2*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="0.2*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <TextBlock Text="Основной счет:"
+                   FontSize="48px"
+                   Margin="30px 0 0 0"
+                   VerticalAlignment="Center"
                    Foreground="{StaticResource TextColor}"/>
+        <TextBlock Text="0.0 рублей" 
+                   Grid.Column="1" 
+                   Foreground="{StaticResource TextColor}"
+                   FontSize="64px"
+                   HorizontalAlignment="Right"
+                   Margin="0 0 50px 0"
+                   VerticalAlignment="Center"
+                   FontWeight="Bold"
+        />
+        <StackPanel Grid.Row="1">
+            <TextBlock Text="Доходы"
+                   Foreground="{StaticResource TextColor}"
+                   FontSize="36px"
+                   HorizontalAlignment="Center"/>
+        </StackPanel>
+        <StackPanel Grid.Row="1" Grid.Column="1">
+            <TextBlock Text="Расходы"
+                   Foreground="{StaticResource TextColor}"
+                   FontSize="36px"
+                   HorizontalAlignment="Center"/>
+            
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" Grid.Row="2" Grid.ColumnSpan="2" HorizontalAlignment="Center">
+            <Button
+                Content="Создать счет"
+                Width="300px"
+                Height="60px"
+                Background="{StaticResource ElementsColor}"
+            Foreground="{StaticResource TextColor}"
+            FontSize="24px"
+            HorizontalAlignment="Center"
+                FontWeight="Bold"/>
+        <Button
+            Content="Добавить доходы"
+            Width="300px"
+            Height="60px"
+            Background="{StaticResource ElementsColor}"
+            Foreground="{StaticResource TextColor}"
+            FontSize="24px"
+            HorizontalAlignment="Center"
+            FontWeight="Bold"
+            Margin="30px 0 30px 0"/>
+       <Button
+            Content="Добавить расходы"
+            Width="300px"
+            Height="60px"
+            Background="{StaticResource ElementsColor}"
+            Foreground="{StaticResource TextColor}"
+            FontSize="24px"
+            HorizontalAlignment="Center"
+            FontWeight="Bold"/>
+
+        </StackPanel>
     </Grid>
 </Page>

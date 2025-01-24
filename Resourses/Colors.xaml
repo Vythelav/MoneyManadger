@@ -3,5 +3,5 @@
     <SolidColorBrush x:Key="PrimaryColor" Color="AliceBlue"/>
     <SolidColorBrush x:Key="ElementsColor" Color="BlueViolet"/>
     <SolidColorBrush x:Key="TextColor" Color="Black"/>
-    <SolidColorBrush x:Key="SecondColor" Color="AliceBlue"/>
+    <SolidColorBrush x:Key="SecondColor" Color="Orange"/>
 </ResourceDictionary>

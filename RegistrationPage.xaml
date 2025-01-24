@@ -15,22 +15,25 @@
             <TextBlock Text="Регистрация"
           HorizontalAlignment="Center"
           FontSize="18px"
-          Margin="0 0 0 20px"
+          Margin="0 0 0 10px"
           Foreground="{StaticResource TextColor}"/>
+            <TextBlock Text="Логин"/>
             <TextBox x:Name="LoginTextBox"
         Width="200px"
         Height="30px"
-        Margin="0 0 0 20px"/>
+        Margin="0 0 0 10px"/>
+            <TextBlock Text="Почта"/>
             <TextBox x:Name="EmailTextBox"
         Width="200px"
         Height="30px"
-        Margin="0 0 0 20px"/>
-
+        Margin="0 0 0 10px"/>
+            <TextBlock Text="Пароль"/>
             <PasswordBox x:Name="PasswordTextBox"
             Width="200px"
             Height="30px"
-            Margin="0 0 0 20px"/>
-            <TextBox x:Name="EmailTextBox_Копировать"
+            Margin="0 0 0 10px"/>
+            <TextBlock Text="Имя"/>
+            <TextBox x:Name="Namebox"
                 Width="200px"
                 Height="30px"
         />

@@ -5,14 +5,54 @@
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:MoneyManadger"
       mc:Ignorable="d" 
-      d:DesignHeight="450" d:DesignWidth="800"
+      d:DesignHeight="1080" d:DesignWidth="1920"
       Title="AccauntPage">
 
     <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="0.2*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="0.2*"/>
+        </Grid.RowDefinitions>
         <TextBlock Text="Аккаунт"
-            FontSize="36px"
+            FontSize="72px"
             HorizontalAlignment="Center"
-            Margin="0 30px 0 0"
+            VerticalAlignment="Center"
             Foreground="{StaticResource TextColor}"/>
+        <StackPanel Grid.Row="1">
+            <TextBlock Text="Информация об аккаунте"
+                       Foreground="{StaticResource TextColor}"
+                       FontSize="64px"
+                       Margin="30px 0 0 50px"/>
+            <TextBlock Text="Иван Иванов"
+                       Foreground="{StaticResource TextColor}"
+                       FontSize="48px"
+                       Margin="30px 0 0 0"/>
+            <TextBlock Text="ID: 777"
+                       Foreground="{StaticResource TextColor}"
+                       FontSize="36px"
+                       Margin="30px 0 0 0"/>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal"
+                    HorizontalAlignment="Right"
+                    Grid.Row="2">
+            <Button Content="Изменить данные аккаунта"
+                    Foreground="{StaticResource TextColor}"
+                    Background="{StaticResource ElementsColor}"
+                    Width="550px"
+                    Height="80px"
+                    FontSize="36px"
+                    FontWeight="Bold"
+                    Margin="0 0 160px 0"/>
+            <Button Content="Удалть аккаунт"
+                    Foreground="White"
+                    Background="Red"
+                    Width="500px"
+                    Height="80px"
+                    FontSize="36px"
+                    FontWeight="Bold"
+                    Margin="0 0 30px 0"/>
+
+        </StackPanel>
     </Grid>
 </Page>
