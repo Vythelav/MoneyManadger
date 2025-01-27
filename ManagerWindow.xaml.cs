@@ -6,12 +6,12 @@ namespace MoneyManadger
 {
     public partial class ManagerWindow : Window
     {
-        private User currentUser; // Добавьте поле для текущего пользователя
+        private User currentUser; 
 
-        public ManagerWindow(User user) // Измените конструктор для принятия объекта User
+        public ManagerWindow(User user) 
         {
             InitializeComponent();
-            currentUser = user; // Сохраните текущего пользователя
+            currentUser = user; 
             ManagerFrame.Content = new HomePage();
         }
 

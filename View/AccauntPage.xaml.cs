@@ -14,6 +14,13 @@ namespace MoneyManadger
         public AccauntPage(User user)
         {
             InitializeComponent();
+
+            
+            if (user == null)
+            {
+                throw new ArgumentNullException(nameof(user), "Пользователь не может быть null");
+            }
+
             currentUserId = user.Id;
             LoadUserData(currentUserId);
         }
@@ -74,5 +81,5 @@ namespace MoneyManadger
         }
     }
 
-  
+    
 }

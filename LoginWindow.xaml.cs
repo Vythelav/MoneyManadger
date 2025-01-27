@@ -20,14 +20,12 @@ namespace MoneyManadger
     public partial class LoginWindow : Window
     {
        
-        public LoginWindow(User user)
+        public LoginWindow()
         {
             InitializeComponent();
-            LoginFrame.Content = new LoginPage(user);
+            LoginFrame.Content = new LoginPage();
         }
 
-        public LoginWindow() : this(null) 
-        {
-        }
+        
     }
 }
