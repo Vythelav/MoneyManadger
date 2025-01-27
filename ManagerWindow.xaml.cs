@@ -1,27 +1,17 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace MoneyManadger
 {
-    /// <summary>
-    /// Логика взаимодействия для ManagerWindow.xaml
-    /// </summary>
     public partial class ManagerWindow : Window
     {
-        public ManagerWindow()
+        private User currentUser; // Добавьте поле для текущего пользователя
+
+        public ManagerWindow(User user) // Измените конструктор для принятия объекта User
         {
             InitializeComponent();
+            currentUser = user; // Сохраните текущего пользователя
             ManagerFrame.Content = new HomePage();
         }
 
@@ -42,7 +32,7 @@ namespace MoneyManadger
 
         private void UserImageClick(object sender, MouseButtonEventArgs e)
         {
-            ManagerFrame.Content = new AccauntPage();
+            ManagerFrame.Content = new AccauntPage(currentUser); 
         }
 
         private void GearImageClick(object sender, MouseButtonEventArgs e)

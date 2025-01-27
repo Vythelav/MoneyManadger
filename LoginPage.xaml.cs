@@ -22,10 +22,12 @@ namespace MoneyManadger
     /// </summary>
     public partial class LoginPage : Page
     {
-        private string connectionString = "Server=510EC15;Database=MoneyManager;Trusted_Connection=True;";
-        public LoginPage()
+        private string connectionString = "Server=LAPTOP-V0AGQKUF\\SLAUUUIK;Database=MoneyManager;Trusted_Connection=True;";
+        private User currentUser;
+        public LoginPage(User user)
         {
             InitializeComponent();
+            currentUser = user;
         }
         private void Login_Button_Click(object sender, RoutedEventArgs e)
         {
@@ -44,7 +46,7 @@ namespace MoneyManadger
                 User user = ValidateUser(username, password);
                 if (user != null)
                 {
-                    ManagerWindow managerWindow = new ManagerWindow();
+                    ManagerWindow managerWindow = new ManagerWindow(currentUser);
                     managerWindow.Show();
                 }
                 else

@@ -1,28 +1,78 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+using System.Data.SqlClient;
 using System.Threading.Tasks;
-using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace MoneyManadger
 {
-    /// <summary>
-    /// Логика взаимодействия для AccauntPage.xaml
-    /// </summary>
     public partial class AccauntPage : Page
     {
-        public AccauntPage()
+        private string connectionString = "Server=LAPTOP-V0AGQKUF\\SLAUUUIK;Database=MoneyManager;Trusted_Connection=True;";
+
+        private int currentUserId;
+
+        public AccauntPage(User user)
         {
             InitializeComponent();
+            currentUserId = user.Id;
+            LoadUserData(currentUserId);
+        }
+
+        private async void LoadUserData(int userId)
+        {
+            try
+            {
+                User user = await GetUserAsync(userId);
+                if (user != null)
+                {
+                    accountInfoTextBlock.Text = "Информация об аккаунте";
+                    nameTextBlock.Text = user.Name;
+                    idTextBlock.Text = $"ID: {user.Id}";
+                }
+                else
+                {
+                    accountInfoTextBlock.Text = "Пользователь не найден";
+                    nameTextBlock.Text = "";
+                    idTextBlock.Text = "";
+                }
+            }
+            catch (Exception ex)
+            {
+                accountInfoTextBlock.Text = "Ошибка загрузки данных";
+                Console.WriteLine($"Ошибка: {ex.Message}");
+            }
+        }
+
+        private async Task<User> GetUserAsync(int userId)
+        {
+            User user = null;
+
+            using (SqlConnection connection = new SqlConnection(connectionString))
+            {
+                await connection.OpenAsync();
+                string query = "SELECT Name, Id FROM Users WHERE Id = @UserId";
+
+                using (SqlCommand command = new SqlCommand(query, connection))
+                {
+                    command.Parameters.AddWithValue("@UserId", userId);
+
+                    using (SqlDataReader reader = await command.ExecuteReaderAsync())
+                    {
+                        if (await reader.ReadAsync())
+                        {
+                            user = new User
+                            {
+                                Name = reader["Name"].ToString(),
+                                Id = Convert.ToInt32(reader["Id"])
+                            };
+                        }
+                    }
+                }
+            }
+
+            return user;
         }
     }
+
+  
 }

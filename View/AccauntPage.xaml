@@ -23,15 +23,18 @@
             <TextBlock Text="Информация об аккаунте"
                        Foreground="{StaticResource TextColor}"
                        FontSize="64px"
-                       Margin="30px 0 0 50px"/>
+                       Margin="30px 0 0 50px"
+                       x:Name="accountInfoTextBlock"/>
             <TextBlock Text="Иван Иванов"
                        Foreground="{StaticResource TextColor}"
                        FontSize="48px"
-                       Margin="30px 0 0 0"/>
+                       Margin="30px 0 0 0"
+                       x:Name="nameTextBlock"/>
             <TextBlock Text="ID: 777"
                        Foreground="{StaticResource TextColor}"
                        FontSize="36px"
-                       Margin="30px 0 0 0"/>
+                       Margin="30px 0 0 0"
+                       x:Name="idTextBlock"/>
         </StackPanel>
         <StackPanel Orientation="Horizontal"
                     HorizontalAlignment="Right"
