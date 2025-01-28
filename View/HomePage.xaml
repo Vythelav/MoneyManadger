@@ -22,10 +22,9 @@
                    FontSize="48px"
                    Margin="30px 0 0 0"
                    VerticalAlignment="Center"
-                   Foreground="{StaticResource TextColor}"/>
+/>
         <TextBlock Text="0.0 рублей" 
                    Grid.Column="1" 
-                   Foreground="{StaticResource TextColor}"
                    FontSize="64px"
                    HorizontalAlignment="Right"
                    Margin="0 0 50px 0"
@@ -34,13 +33,11 @@
         />
         <StackPanel Grid.Row="1">
             <TextBlock Text="Доходы"
-                   Foreground="{StaticResource TextColor}"
                    FontSize="36px"
                    HorizontalAlignment="Center"/>
         </StackPanel>
         <StackPanel Grid.Row="1" Grid.Column="1">
             <TextBlock Text="Расходы"
-                   Foreground="{StaticResource TextColor}"
                    FontSize="36px"
                    HorizontalAlignment="Center"/>
             

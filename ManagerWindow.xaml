@@ -20,7 +20,7 @@
                        FontSize="36px"
                        HorizontalAlignment="Center"
                        Margin="0 28px 0 0"
-                       Foreground="{StaticResource TextColor}"/>
+                       />
             <Image Source="\Images\home.png"
                    Width="100px"
                    Margin="0 30px 0 0" MouseDown="HomeImageClick"/>

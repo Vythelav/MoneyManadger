@@ -16,7 +16,7 @@
                 HorizontalAlignment="Center"
                 FontSize="18px"
                 Margin="0 0 0 20px"
-                Foreground="{StaticResource TextColor}"/>
+                />
             <TextBlock Text="Логин"/>
             <TextBox x:Name="LoginTextBox"
               Width="200px"
