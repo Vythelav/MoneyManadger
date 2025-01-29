@@ -4,6 +4,7 @@
       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
       xmlns:local="clr-namespace:MoneyManadger"
+      xmlns:vls="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
       mc:Ignorable="d" 
       d:DesignHeight="1080" d:DesignWidth="1920"
       Title="SpendingPage">
@@ -34,6 +35,9 @@
             <TextBlock Text="Расходы"
            FontSize="36px"
            HorizontalAlignment="Center"/>
+            <vls:PieChart Name="pieChart"
+                          Height="600px"
+                          Margin="0 100px 0 0"/>
         </StackPanel>
 
         <StackPanel VerticalAlignment="Center" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center">
