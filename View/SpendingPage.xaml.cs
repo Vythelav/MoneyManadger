@@ -4,105 +4,136 @@ using System.Data.SqlClient;
 using System.Windows;
 using System.Windows.Controls;
 using LiveCharts;
+using LiveCharts.Definitions.Charts;
 using LiveCharts.Wpf;
+using MoneyManadger;
 
-namespace MoneyManadger
+namespace MoneyManager
 {
     public partial class SpendingPage : Page
     {
-        private string connectionString = "Server=LAPTOP-V0AGQKUF\\SLAUUUIK;Database=MoneyManager;Trusted_Connection=True;";
+        private readonly string connectionString = "Server=510EC15;Database=MoneyManager;Trusted_Connection=True;";
+        private readonly Dictionary<string, int> categories = new Dictionary<string, int>();
 
         public SpendingPage()
         {
             InitializeComponent();
+            LoadCategories();
             LoadSpendingData();
         }
 
-        private void LoadSpendingData()
+        private void LoadCategories()
         {
-            UpdatePieChart(DateTime.Now.AddMonths(-1), DateTime.Now); 
-        }
+            categories.Clear();
+            string query = "SELECT Id, Name FROM Categories";
 
-        private void UpdatePieChart(DateTime startDate, DateTime endDate)
-        {
-            string query = "SELECT Category, SUM(Amount) AS TotalAmount FROM [Spending] WHERE TransactionDate >= @StartDate AND TransactionDate <= @EndDate GROUP BY Category";
-            var values = new ChartValues<double>();
-            var labels = new List<string>();
-            double totalSpending = 0;
-
-            using (SqlConnection connection = new SqlConnection(connectionString))
+            try
             {
-                connection.Open();
-                using (SqlCommand command = new SqlCommand(query, connection))
+                using (SqlConnection connection = new SqlConnection(connectionString))
                 {
-                    command.Parameters.AddWithValue("@StartDate", startDate);
-                    command.Parameters.AddWithValue("@EndDate", endDate);
-                    using (SqlDataReader reader = command.ExecuteReader())
+                    connection.Open();
+                    using (SqlCommand command = new SqlCommand(query, connection))
                     {
-                        while (reader.Read())
+                        using (SqlDataReader reader = command.ExecuteReader())
                         {
-                            labels.Add(reader["Category"].ToString());
-                            double amount = reader.GetDouble(reader.GetOrdinal("TotalAmount"));
-                            values.Add(amount);
-                            totalSpending += amount; 
+                            while (reader.Read())
+                            {
+                                int id = reader.GetInt32(0);
+                                string name = reader.GetString(1);
+                                categories[name] = id;
+                            }
                         }
                     }
                 }
             }
-
-            pieChart.Series.Clear();
-            for (int i = 0; i < labels.Count; i++)
+            catch (Exception ex)
             {
-                pieChart.Series.Add(new PieSeries
-                {
-                    Title = labels[i],
-                    Values = new ChartValues<double> { values[i] },
-                    DataLabels = true 
-                });
+                MessageBox.Show("Ошибка загрузки категорий: " + ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
             }
-
-            TotalSpendingTextBlock.Text = $"₽ {totalSpending:0.00}"; 
         }
 
+        private void LoadSpendingData()
+        {
+            UpdatePieChart(DateTime.Now.AddMonths(-1), DateTime.Now);
+        }
+
+        private void UpdatePieChart(DateTime startDate, DateTime endDate)
+        {
+            string query = @"
+                SELECT c.Name, SUM(s.Amount) AS TotalAmount 
+                FROM Spending s 
+                JOIN Categories c ON s.CategoryId = c.Id 
+                WHERE s.TransactionDate BETWEEN @StartDate AND @EndDate 
+                GROUP BY c.Name";
+
+            var values = new ChartValues<double>();
+            var labels = new List<string>();
+            double totalSpending = 0;
+
+            try
+            {
+                using (SqlConnection connection = new SqlConnection(connectionString))
+                {
+                    connection.Open();
+                    using (SqlCommand command = new SqlCommand(query, connection))
+                    {
+                        command.Parameters.AddWithValue("@StartDate", startDate);
+                        command.Parameters.AddWithValue("@EndDate", endDate);
+                        using (SqlDataReader reader = command.ExecuteReader())
+                        {
+                            while (reader.Read())
+                            {
+                                labels.Add(reader["Name"].ToString());
+                                double amount = Convert.ToDouble(reader["TotalAmount"]);
+                                values.Add(amount);
+                                totalSpending += amount;
+                            }
+                        }
+                    }
+                }
+
+                pieChart.Series.Clear();
+                for (int i = 0; i < labels.Count; i++)
+                {
+                    pieChart.Series.Add(new PieSeries
+                    {
+                        Title = labels[i],
+                        Values = new ChartValues<double> { values[i] },
+                        DataLabels = true
+                    });
+                }
+
+                TotalSpendingTextBlock.Text = $"₽ {totalSpending:0.00}";
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Ошибка при загрузке данных: " + ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
         private void AddSpendingButton_Click(object sender, RoutedEventArgs e)
         {
-            var dialog = new AddSpendingDialog();
-            if (dialog.ShowDialog() == true) 
+            var dialog = new AddSpendingDialog(categories.Keys);
+            if (dialog.ShowDialog() == true)
             {
-                double amount;
-                
-                if (double.TryParse(dialog.SpendingAmountTextBox.Text, out amount))
-                {
-                    DateTime transactionDate = DateTime.Now;  
+                int amount = dialog.Amount;
+                string categoryName = dialog.Category;
+                DateTime transactionDate = DateTime.Now;
 
-                     
-                    AddSpendingToDatabase(amount, transactionDate);
-                    LoadSpendingData();  
+                if (categories.TryGetValue(categoryName, out int categoryId))
+                {
+                    AddSpendingToDatabase(amount, categoryId, transactionDate);
+                    LoadSpendingData();
                 }
                 else
                 {
-                    MessageBox.Show("Введите корректную сумму.", "Ошибка ввода", MessageBoxButton.OK, MessageBoxImage.Error);
+                    MessageBox.Show("Ошибка: выбранной категории не существует.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
             }
         }
 
-
-        private void AddCategoryButton_Click(object sender, RoutedEventArgs e)
+        private void AddSpendingToDatabase(int amount, int categoryId, DateTime transactionDate)
         {
-            var dialog = new AddCategoryDialog();
-            if (dialog.ShowDialog() == true) 
-            {
-                string categoryName = dialog.CategoryNameTextBox.Text;
-
-                
-                AddCategoryToDatabase(categoryName);
-                LoadSpendingData(); 
-            }
-        }
-
-        private void AddSpendingToDatabase(double amount, DateTime transactionDate)
-        {
-            string query = "INSERT INTO [Spending] (Amount, TransactionDate, Category) VALUES (@Amount, @TransactionDate, @Category)";
+            string query = "INSERT INTO Spending (Amount, CategoryId, TransactionDate) VALUES (@Amount, @CategoryId, @TransactionDate)";
 
             try
             {
@@ -112,8 +143,8 @@ namespace MoneyManadger
                     using (SqlCommand command = new SqlCommand(query, connection))
                     {
                         command.Parameters.AddWithValue("@Amount", amount);
+                        command.Parameters.AddWithValue("@CategoryId", categoryId);
                         command.Parameters.AddWithValue("@TransactionDate", transactionDate);
-                        command.Parameters.AddWithValue("@Category", "DefaultCategory");  
                         command.ExecuteNonQuery();
                     }
                 }
@@ -124,10 +155,32 @@ namespace MoneyManadger
             }
         }
 
-        private void AddCategoryToDatabase(string categoryName)
+        private void PeriodButton_Click(object sender, RoutedEventArgs e)
         {
-            string query = "INSERT INTO [Categories] (CategoryName) VALUES (@CategoryName)";
+            // Реализация метода выбора периода
+        }
 
+        private void AddCategoryButton_Click(object sender, RoutedEventArgs e)
+        {
+            AddCategoryDialog dialog = new AddCategoryDialog();
+            if (dialog.ShowDialog() == true)
+            {
+                string newCategoryName = dialog.CategoryName;
+                if (AddCategoryToDatabase(newCategoryName))
+                {
+                    MessageBox.Show($"Категория '{newCategoryName}' успешно добавлена.", "Успех", MessageBoxButton.OK, MessageBoxImage.Information);
+                    LoadCategories(); // Обновляем список категорий
+                }
+                else
+                {
+                    MessageBox.Show("Ошибка при добавлении категории. Возможно, такая категория уже существует.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }
+        }
+
+        private bool AddCategoryToDatabase(string categoryName)
+        {
+            string query = "INSERT INTO Categories (Name) VALUES (@Name)";
             try
             {
                 using (SqlConnection connection = new SqlConnection(connectionString))
@@ -135,21 +188,23 @@ namespace MoneyManadger
                     connection.Open();
                     using (SqlCommand command = new SqlCommand(query, connection))
                     {
-                        command.Parameters.AddWithValue("@CategoryName", categoryName);
+                        command.Parameters.AddWithValue("@Name", categoryName);
                         command.ExecuteNonQuery();
                     }
                 }
+                return true;
             }
-            catch (SqlException ex)
+            catch (SqlException ex) when (ex.Number == 2627) // Violation of unique constraint
+            {
+                return false;
+            }
+            catch (Exception ex)
             {
                 MessageBox.Show("Ошибка при добавлении категории: " + ex.Message, "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
             }
         }
-
-        private void PeriodButton_Click(object sender, RoutedEventArgs e)
-        {
-            
-        }
-
     }
 }
+
+    

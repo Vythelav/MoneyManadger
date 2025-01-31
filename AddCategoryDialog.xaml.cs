@@ -1,9 +1,11 @@
 ﻿using System.Windows;
 
-namespace MoneyManadger
+namespace MoneyManager
 {
     public partial class AddCategoryDialog : Window
     {
+        public string CategoryName { get; private set; }
+
         public AddCategoryDialog()
         {
             InitializeComponent();
@@ -11,14 +13,16 @@ namespace MoneyManadger
 
         private void AddButton_Click(object sender, RoutedEventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(CategoryNameTextBox.Text))
+            CategoryName = CategoryNameTextBox.Text.Trim();
+            if (string.IsNullOrEmpty(CategoryName))
             {
-                MessageBox.Show("Имя категории не может быть пустым.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return;
+                MessageBox.Show("Пожалуйста, введите название категории.", "Ошибка", MessageBoxButton.OK, MessageBoxImage.Error);
             }
-
-            DialogResult = true;
-            Close();
+            else
+            {
+                DialogResult = true;
+                Close();
+            }
         }
 
         private void CancelButton_Click(object sender, RoutedEventArgs e)

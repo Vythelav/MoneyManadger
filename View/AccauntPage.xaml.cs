@@ -8,7 +8,7 @@ namespace MoneyManadger
 {
     public partial class AccauntPage : Page
     {
-        private string connectionString = "Server=LAPTOP-V0AGQKUF\\SLAUUUIK;Database=MoneyManager;Trusted_Connection=True;";
+        private string connectionString = "Server=510EC15;Database=MoneyManager;Trusted_Connection=True;";
         private int currentUserId;
 
         public AccauntPage(User user)
