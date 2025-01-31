@@ -18,12 +18,12 @@
             <ColumnDefinition/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <TextBlock Text="Расходы"
+        <TextBlock  x:Name="TotalSpendingTextBlock" Text="Расходы"
            FontSize="48px"
            Margin="30px 0 0 0"
            VerticalAlignment="Center"
            />
-        <TextBlock Text="0.0 рублей" 
+        <TextBlock  Text="0.0 рублей" 
            Grid.Column="1" 
            FontSize="64px"
            HorizontalAlignment="Right"
@@ -36,12 +36,13 @@
            FontSize="36px"
            HorizontalAlignment="Center"/>
             <vls:PieChart Name="pieChart"
-                          Height="600px"
-                          Margin="0 100px 0 0"/>
+               Height="600px"
+               Margin="0 100px 0 0"/>
         </StackPanel>
 
         <StackPanel VerticalAlignment="Center" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center">
             <Button
+                Click="PeriodButton_Click"
         Content="Выбрать период"
         Width="300px"
         Height="60px"
@@ -51,6 +52,7 @@
     HorizontalAlignment="Center"
         FontWeight="Bold"/>
             <Button
+               Click="AddSpendingButton_Click"
     Content="Добавить расходы"
     Width="300px"
     Height="60px"
@@ -61,6 +63,7 @@
     FontWeight="Bold"
     Margin="0 100px 0 30px"/>
             <Button
+                 x:Name="AddCategoryButton"
     Content="Добавить категорию"
     Width="300px"
     Height="60px"

@@ -1,11 +1,11 @@
-﻿<Page x:Class="MoneyManadger.IncomePage"
+﻿<Page x:Class="MoneyManager.IncomePage"
       xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-      xmlns:local="clr-namespace:MoneyManadger"
+      xmlns:local="clr-namespace:MoneyManager"
       xmlns:vls="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
-      mc:Ignorable="d" 
+      mc:Ignorable="d"
       d:DesignHeight="1080" d:DesignWidth="1920"
       Title="IncomePage">
 
@@ -18,58 +18,53 @@
             <ColumnDefinition/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <TextBlock Text="Доходы"
-            FontSize="48px"
-            Margin="30px 0 0 0"
-            VerticalAlignment="Center"
-            />
-        <TextBlock Text="0.0 рублей" 
-            Grid.Column="1" 
-            FontSize="64px"
-            HorizontalAlignment="Right"
-            Margin="0 0 50px 0"
-            VerticalAlignment="Center"
-            FontWeight="Bold"
- />
-        <StackPanel Grid.Row="1">
-            <TextBlock Text="Доходы"
-            FontSize="36px"
-            HorizontalAlignment="Center"/>
-            <vls:PieChart Name="pieChart"
-              Height="600px"
-              Margin="0 100px 0 0"/>
-        </StackPanel>
-       
-        <StackPanel VerticalAlignment="Center" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center">
-            <Button
-         Content="Выбрать период"
-         Width="300px"
-         Height="60px"
-         Background="{StaticResource ElementsColor}"
-     Foreground="{StaticResource TextColor}"
-     FontSize="24px"
-     HorizontalAlignment="Center"
-         FontWeight="Bold"/>
-            <Button
-     Content="Добавить доходы"
-     Width="300px"
-     Height="60px"
-     Background="{StaticResource SecondColor}"
-     Foreground="{StaticResource TextColor}"
-     FontSize="24px"
-     HorizontalAlignment="Center"
-     FontWeight="Bold"
-     Margin="0 100px 0 30px"/>
-            <Button
-     Content="Добавить категорию"
-     Width="300px"
-     Height="60px"
-     Background="{StaticResource SecondColor}"
-     Foreground="{StaticResource TextColor}"
-     FontSize="24px"
-     HorizontalAlignment="Center"
-     FontWeight="Bold"/>
 
+        <TextBlock Text="Доходы"
+                   FontSize="48"
+                   Margin="30 0 0 0"
+                   VerticalAlignment="Center" />
+        <TextBlock x:Name="TotalIncomeTextBlock"
+                   Text="₽ 0.0"
+                   Grid.Column="1"
+                   FontSize="64"
+                   HorizontalAlignment="Right"
+                   Margin="0 0 50 0"
+                   VerticalAlignment="Center"
+                   FontWeight="Bold" />
+
+        <StackPanel Grid.Row="1">
+            <TextBlock Text="Доходы" FontSize="36" HorizontalAlignment="Center"/>
+            <vls:PieChart x:Name="pieChart" Height="500" Margin="0 100 0 0"/>
+        </StackPanel>
+
+        <StackPanel VerticalAlignment="Center" Grid.Row="1" Grid.Column="1" HorizontalAlignment="Center">
+            <Button Content="Выбрать период"
+                    Width="300"
+                    Height="60"
+                    Background="{StaticResource ElementsColor}"
+                    Foreground="{StaticResource TextColor}"
+                    FontSize="24"
+                    FontWeight="Bold"
+                    Click="PeriodButton_Click"/>
+
+            <Button Content="Добавить доходы"
+                    Width="300"
+                    Height="60"
+                    Background="{StaticResource SecondColor}"
+                    Foreground="{StaticResource TextColor}"
+                    FontSize="24"
+                    FontWeight="Bold"
+                    Margin="0 100 0 30"
+                    Click="AddIncomeButton_Click"/>
+
+            <Button Content="Добавить категорию"
+                    Width="300"
+                    Height="60"
+                    Background="{StaticResource SecondColor}"
+                    Foreground="{StaticResource TextColor}"
+                    FontSize="24"
+                    FontWeight="Bold"
+                    Click="AddCategoryButton_Click"/>
         </StackPanel>
     </Grid>
 </Page>
